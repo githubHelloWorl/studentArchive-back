@@ -59,4 +59,43 @@ public class LoginController {
 
         return Result.error();
     }
+
+    @PostMapping("register1")
+    public Result register1(@RequestBody S s, HttpServletRequest request){
+        log.info("{} 进行登录",s);
+
+        QueryWrapper<S> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("sid",s.getSid());
+        S s1 = loginService.getOne(queryWrapper);
+
+        if(s1 != null){
+            log.info("{} 已有角色",s1);
+            return Result.error();
+        }
+
+        // 进行插入
+        loginService.save(s);
+
+        return Result.error();
+    }
+
+    @PostMapping("register2")
+    public Result register2(@RequestBody T t, HttpServletRequest request){
+        log.info("{} 进行注册",t);
+
+        QueryWrapper<T> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("tid",t.getTid());
+        T t1 = loginService2.getOne(queryWrapper);
+
+        if(t1 != null){
+            log.info("{} 已经存在",t1);
+            return Result.error();
+        }
+
+        // 进行插入
+        loginService2.save(t);
+
+        return Result.success();
+    }
+
 }

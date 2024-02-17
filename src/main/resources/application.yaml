@@ -3,7 +3,7 @@ server:
   servlet:
     context-path: /api
 
-    # session???? ????
+    # session过期时间 单位为秒
     session:
       timeout: 1800
 spring:

@@ -1,6 +1,11 @@
 server:
   port: 8088
+  servlet:
+    context-path: /api
 
+    # session???? ????
+    session:
+      timeout: 1800
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource

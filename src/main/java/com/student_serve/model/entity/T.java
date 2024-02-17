@@ -1,6 +1,7 @@
 package com.student_serve.model.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.student_serve.model.vo.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -42,4 +43,11 @@ public class T {
     this.password = password;
   }
 
+  public User toUser(){
+    User user = new User();
+    user.setId(this.tid);
+    user.setName(this.tname);
+    user.setType("teacher");
+    return user;
+  }
 }

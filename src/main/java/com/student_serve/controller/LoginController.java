@@ -1,8 +1,11 @@
 package com.student_serve.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.Query;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.student_serve.model.entity.S;
 import com.student_serve.model.entity.T;
+import com.student_serve.model.mapper.LoginMapper;
+import com.student_serve.model.mapper.LoginMapper2;
 import com.student_serve.model.pojo.Result;
 import com.student_serve.model.vo.User;
 import com.student_serve.service.LoginService;
@@ -21,6 +24,12 @@ public class LoginController {
 
     @Autowired
     private LoginService2 loginService2;
+
+    @Autowired
+    private LoginMapper loginMapper;
+
+    @Autowired
+    private LoginMapper2 loginMapper2;
 
     @PostMapping("/login1")
     public Result login1(@RequestBody S s, HttpServletRequest request) {
@@ -65,46 +74,88 @@ public class LoginController {
     public Result register1(@RequestBody S s, HttpServletRequest request) {
         log.info("{} 进行登录", s);
 
+        /*
         QueryWrapper<S> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("sid", s.getSid());
         S s1 = loginService.getOne(queryWrapper);
-
         if (s1 != null) {
             log.info("{} 已有角色", s1);
             return Result.error();
         }
+         */
 
         // 进行插入
-        loginService.save(s);
+        boolean result = loginService.save(s);
+        if (result) {
+            QueryWrapper<S> queryWrapper = new QueryWrapper<>();
+            queryWrapper.select("sid").orderByDesc("sid").last("LIMIT 1");
+            S s1 = loginMapper.selectOne(queryWrapper);
+            log.info("{} 注册信息", s1);
+            return Result.success(1, "success", s1.getSid());
+        }
 
-        return Result.error();
+        return Result.error("系统错误");
     }
 
     @PostMapping("/register2")
     public Result register2(@RequestBody T t, HttpServletRequest request) {
         log.info("{} 进行注册", t);
 
+        /*
         QueryWrapper<T> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("tid", t.getTid());
         T t1 = loginService2.getOne(queryWrapper);
-
         if (t1 != null) {
             log.info("{} 已经存在", t1);
             return Result.error();
         }
+         */
 
         // 进行插入
-        loginService2.save(t);
+        boolean result = loginService2.save(t);
+        if (result) {
+            QueryWrapper<T> queryWrapper = new QueryWrapper<>();
+            queryWrapper.select("tid").orderByDesc("tid").last("LIMIT 1");
+            T t1 = loginMapper2.selectOne(queryWrapper);
+            log.info("{} 注册信息", t1);
+            return Result.success(1, "success", t1.getTid());
+        }
 
-        return Result.success();
+        return Result.error("系统错误");
     }
 
-    @GetMapping("/getState")
-    public Result getState(HttpServletRequest request) {
-        if (request.getSession().getAttribute("state") == null) {
+    @GetMapping("/getStudentInfo")
+    public Result getStudentInfo(HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("LoginSuccess");
+
+        if (user == null) {
             return Result.error();
         }
-        return Result.success((String) request.getSession().getAttribute("state"));
+
+        QueryWrapper<S> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("sid", user.getId());
+        S s = loginMapper.selectOne(queryWrapper);
+        if (s == null) {
+            return Result.error();
+        }
+        return Result.success(1, "success", s);
+    }
+
+    @GetMapping("/getTeacherInfo")
+    public Result getTeacherInfo(HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("LoginSuccess");
+
+        if (user == null) {
+            return Result.error();
+        }
+
+        QueryWrapper<T> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("tid", user.getId());
+        T t = loginMapper2.selectOne(queryWrapper);
+        if (t == null) {
+            return Result.error();
+        }
+        return Result.success(1, "success", t);
     }
 
     @GetMapping("/getLogin")

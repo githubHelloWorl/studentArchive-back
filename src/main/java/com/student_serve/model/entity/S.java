@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,6 +17,11 @@ public class S {
   private long sid;
   private String sname;
   private String password;
+  private String sex;
+  private String phone;
+  private String department;
+  private String major;
+  private Date date;
 
 
   public long getSid() {

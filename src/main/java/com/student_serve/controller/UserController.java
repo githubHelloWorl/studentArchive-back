@@ -74,7 +74,7 @@ public class UserController {
         log.info("{} 进行注册", user);
 
         // 验证
-        if (StringUtils.isAnyBlank(user.getUserAccount(), user.getUserPassword(), user.getCheckRePassword(), user.getCardId(), user.getUserRole(), user.getPhone(), user.getDepartment(), user.getClasses())) {
+        if (StringUtils.isAnyBlank(user.getUserAccount(), user.getUserPassword(), user.getCheckRePassword(), user.getCardId(), user.getUserRole(), user.getPhone())) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
 
@@ -99,7 +99,7 @@ public class UserController {
         log.info("{} 进行修改密码", user);
 
         // 验证
-        if (StringUtils.isAnyBlank(user.getUserPassword(), user.getCheckRePassword(), user.getCardId())) {
+        if (StringUtils.isAnyBlank(user.getUserAccount(), user.getUserName(),user.getUserPassword(), user.getCheckRePassword(), user.getCardId())) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
 

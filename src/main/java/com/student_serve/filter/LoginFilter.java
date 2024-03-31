@@ -54,7 +54,7 @@ public class LoginFilter implements Filter {
             // 允许通过
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
-            throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
+            throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR,"未登录,请重新登录");
         }
 //
     }

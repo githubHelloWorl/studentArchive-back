@@ -52,10 +52,10 @@ public class RewardPunishInfoController {
         Date fileTime = rewardpunishinfo.getFileTime();
         Date submitTime = rewardpunishinfo.getSubmitTime();
         Date checkTime = rewardpunishinfo.getCheckTime();
-//        Date stime = rewardpunishinfo.getStime();
+        String stime = rewardpunishinfo.getStime();
 
         // 如果标题 学号 工号 证书名称 信息
-        if (StringUtils.isAnyBlank(sid, fileName, fileInfo)) {
+        if (StringUtils.isAnyBlank(sid, fileName, fileInfo, stime)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
 

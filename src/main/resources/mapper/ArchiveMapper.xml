@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.student_serve.mapper.ArchiveMapper">
+
+    <resultMap id="BaseResultMap" type="com.student_serve.model.entity.Archive">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="sid" column="sid" jdbcType="VARCHAR"/>
+            <result property="archiveId" column="archiveId" jdbcType="VARCHAR"/>
+            <result property="sex" column="sex" jdbcType="VARCHAR"/>
+            <result property="address" column="address" jdbcType="VARCHAR"/>
+            <result property="health" column="health" jdbcType="VARCHAR"/>
+            <result property="origin" column="origin" jdbcType="VARCHAR"/>
+            <result property="nation" column="nation" jdbcType="VARCHAR"/>
+            <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,sid,archiveId,
+        sex,address,health,
+        origin,nation,createTime,
+        updateTime
+    </sql>
+
+    <select id="queryArchive" parameterType="com.student_serve.model.dto.archive.ArchiveQueryRequest" resultType="com.student_serve.model.vo.ArchiveVO">
+        select a.*,u.userName from archive a left join user u on a.sid = u.userAccount
+        <where>
+            <if test="form.userAccount != null and form.userAccount != ''">
+                a.sid = #{form.userAccount}
+            </if>
+            <if test="form.userName != null and form.userName != ''">
+                and u.userName = #{form.userName}
+            </if>
+            <if test="form.cardId != null and form.cardId != ''">
+                and u.cardId = #{form.cardId}
+            </if>
+            <if test="form.phone != null and form.phone != ''">
+                and u.phone = #{form.phone}
+            </if>
+            <if test="form.classes != null and form.classes != ''">
+                and u.classes = #{form.classes}
+            </if>
+            <if test="form.archiveId != null and form.archiveId != ''">
+                and a.archiveId = #{form.archiveId}
+            </if>
+        </where>
+    </select>
+</mapper>

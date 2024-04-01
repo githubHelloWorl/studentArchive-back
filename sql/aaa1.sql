@@ -57,6 +57,18 @@ create table archive
     createTime datetime     null comment '出生时间',
     updateTime datetime     null on update CURRENT_TIMESTAMP comment '更新时间'
 ) comment '档案' collate = utf8mb4_unicode_ci;
+INSERT INTO archive(id,sid,archiveId,sex,address,health,origin,nation,createTime,updateTime)
+VALUES(1,'20212314001','20240401072616001','男','新疆','健康','乌鲁木齐','汉','2024-03-31 22:30:32','2024-03-31 22:30:32');
+INSERT INTO archive(id,sid,archiveId,sex,address,health,origin,nation,createTime,updateTime)
+VALUES(2,'20212314002','20240328005656002','男','山东','健康','济南','汉','2024-03-31 22:30:32','2024-03-31 22:30:32');
+INSERT INTO archive(id,sid,archiveId,sex,address,health,origin,nation,createTime,updateTime)
+VALUES(3,'20212314003','20240329023616003','男','河南','健康','郑州','汉','2024-03-31 22:30:32','2024-03-31 22:30:32');
+INSERT INTO archive(id,sid,archiveId,sex,address,health,origin,nation,createTime,updateTime)
+VALUES(4,'20212314004','20240330552016004','女','新疆','健康','乌鲁木齐','汉','2024-03-31 22:30:32','2024-03-31 22:30:32');
+INSERT INTO archive(id,sid,archiveId,sex,address,health,origin,nation,createTime,updateTime)
+VALUES(5,'20212314005','20240330562616005','女','河北','石家庄','乌鲁木齐','汉','2024-03-31 22:30:32','2024-03-31 22:30:32');
+INSERT INTO archive(id,sid,archiveId,sex,address,health,origin,nation,createTime,updateTime)
+VALUES(6,'20212314006','20240329072616006','男','新疆','健康','乌鲁木齐','汉','2024-03-31 22:30:32','2024-03-31 22:30:32');
 
 drop table if exists rewardPunishInfo;
 create table rewardPunishInfo

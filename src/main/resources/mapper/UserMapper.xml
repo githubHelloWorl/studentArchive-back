@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.student_serve.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="com.student_serve.model.entity.User">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="userAccount" column="userAccount" jdbcType="VARCHAR"/>
+            <result property="userName" column="userName" jdbcType="VARCHAR"/>
+            <result property="userPassword" column="userPassword" jdbcType="VARCHAR"/>
+            <result property="cardId" column="cardId" jdbcType="VARCHAR"/>
+            <result property="userRole" column="userRole" jdbcType="VARCHAR"/>
+            <result property="phone" column="phone" jdbcType="VARCHAR"/>
+            <result property="department" column="department" jdbcType="VARCHAR"/>
+            <result property="classes" column="classes" jdbcType="VARCHAR"/>
+            <result property="job" column="job" jdbcType="VARCHAR"/>
+            <result property="duty" column="duty" jdbcType="VARCHAR"/>
+            <result property="unity" column="unity" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,userAccount,userName,
+        userPassword,cardId,userRole,
+        phone,department,classes,
+        job,duty,unity,
+        updateTime
+    </sql>
+</mapper>

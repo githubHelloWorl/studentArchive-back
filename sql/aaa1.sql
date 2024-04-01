@@ -1,6 +1,6 @@
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
-
+----
 -- 用户表
 drop table if exists user;
 create table user

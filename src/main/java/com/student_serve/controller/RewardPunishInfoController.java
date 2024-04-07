@@ -1,6 +1,7 @@
 package com.student_serve.controller;
 
 import com.baomidou.mybatisplus.extension.api.R;
+import com.github.pagehelper.PageHelper;
 import com.student_serve.common.BaseResponse;
 import com.student_serve.common.ErrorCode;
 import com.student_serve.common.ResultUtils;
@@ -118,6 +119,8 @@ public class RewardPunishInfoController {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
 
+        PageHelper.startPage(1, 10);
+
         return ResultUtils.success(rewardpunishinfoService.queryPR(fileInfo));
     }
 
@@ -203,27 +206,13 @@ public class RewardPunishInfoController {
         return ResultUtils.success(rewardpunishinfoService.deletePunish(rewardpunishinfo));
     }
 
+    @GetMapping("/getPRByuserAccount")
+    public BaseResponse<List> getPRByuserAccount(@RequestParam("userAccount") String userAccount,HttpServletRequest request){
+        log.info("{} 身份进行查询PR");
 
-    /**
-     * 得到文件 all
-     * @param rewardpunishinfo
-     * @param request
-     * @return
-     */
-//    @PostMapping("/queryPRByTeacher")
-//    public BaseResponse<List> queryPRByTeacher(@RequestBody PRInfoQueryRequest prInfoQueryRequest, HttpServletRequest request) {
-//        log.info("{} 查找文件", prInfoQueryRequest);
-//
-//        //
-//        String state = prInfoQueryRequest.getState();
-//        String userAccount = prInfoQueryRequest.getUserAccount();
-//        String fileInfo = prInfoQueryRequest.getFileInfo();
-//        String classes = prInfoQueryRequest.getClasses();
-//
-//        if (StringUtils.isAnyBlank(state, fileInfo)) {
-//            throw new BusinessException(ErrorCode.PARAMS_ERROR);
-//        }
-//
-//        return ResultUtils.success(rewardpunishinfoService.queryPRByTeacher(prInfoQueryRequest));
-//    }
+        if(userAccount.length() != 11){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"学生学号错误");
+        }
+        return ResultUtils.success(rewardpunishinfoService.getPRByuserAccount(userAccount));
+    }
 }

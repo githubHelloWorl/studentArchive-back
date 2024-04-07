@@ -51,4 +51,11 @@ public interface RewardpunishinfoService extends IService<Rewardpunishinfo> {
      * 通过删除学生 - 删除信息
      */
     Rewardpunishinfo deletePR(String userAccount);
+
+    /**
+     * 得到PR
+     * @param userAccount
+     * @return
+     */
+    List<Rewardpunishinfo> getPRByuserAccount(String userAccount);
 }

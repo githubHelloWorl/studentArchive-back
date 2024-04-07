@@ -11,7 +11,7 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     url: jdbc:mysql:///bishe?characterEncoding=utf-8
     username: root
-    password: chen1213
+    password: pass
     driver-class-name: com.mysql.cj.jdbc.Driver
   mvc:
     static-path-pattern: /static/**
@@ -49,4 +49,12 @@ mybatis-plus:
   # 这个属性配置了 MyBatis Mapper XML 文件的位置。
   # 指定了 XML Mapper 文件所在的路径，这些文件描述了 SQL 映射和查询语句
   #mapper-locations: classpath:/mapper/*.xml
+
+#分页助手
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+
 

@@ -8,9 +8,13 @@ import static com.student_serve.constant.UserConstant.*;
 
 import com.student_serve.common.ErrorCode;
 import com.student_serve.exception.BusinessException;
+import com.student_serve.model.dto.user.UserArchiveRequest;
 import com.student_serve.model.dto.user.UserRegisterRequest;
+import com.student_serve.model.dto.user.UserUpdatePassRequest;
+import com.student_serve.model.entity.Archive;
 import com.student_serve.model.entity.Rewardpunishinfo;
 import com.student_serve.model.entity.User;
+import com.student_serve.model.vo.UserArchiveVO;
 import com.student_serve.service.ArchiveService;
 import com.student_serve.service.RewardpunishinfoService;
 import com.student_serve.service.UserService;
@@ -25,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author yang99977
@@ -177,6 +182,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         int result = this.baseMapper.insert(user2);
         Boolean flag = false;
 
+        // TODO 1 是否创建档案
         // 创建档案
 //        if (result != 0 && userRole.equals("student")) {
 //            flag = archiveService.createArchive(user2);
@@ -357,14 +363,25 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         return this.baseMapper.selectList(queryWrapper);
     }
 
+
+
+    /**
+     * 删除用户
+     * @param user
+     * @return
+     */
     @Transactional(rollbackFor = Exception.class)
     @Override
     public User deleteUser(User user) {
         // 得到数据
         String userAccount = user.getUserAccount();
 
+        // TODO 2 是否删除档案
         // 删除档案
-        archiveService.deleteArchive(userAccount);
+//        archiveService.deleteArchive(userAccount);
+        if(user.getUserRole().equals("student")){
+            archiveService.deleteArchive(userAccount);
+        }
 
         // 删除PR
         rewardpunishinfoService.deletePR(userAccount);
@@ -377,6 +394,121 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             throw new BusinessException(ErrorCode.OPERATION_ERROR,"删除失败");
         }
         return user;
+    }
+
+    /**
+     * 导入用户
+     * @param userList
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Boolean importData(List<User> userList){
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("MAX(userAccount) as maxAccount");
+        Map<String, Object> result = this.baseMapper.selectMaps(queryWrapper).get(0);
+        String maxAccountStr = (String) result.get("maxAccount");
+
+        Long maxAccount = Long.valueOf(maxAccountStr);
+
+        System.out.println(maxAccount);
+
+        int len = userList.size();
+        for(int i = 0; i<len; ++i){
+            String userName = userList.get(i).getUserName();
+            String cardId = userList.get(i).getCardId();
+            String phone = userList.get(i).getPhone();
+
+            // 姓名
+            if (userName.length() < 2 || userName.length() > 6) {
+                throw new BusinessException(ErrorCode.PARAMS_ERROR, "姓名长度必须在2-6位中");
+            }
+            // 身份证号
+            if(cardId.length() != 18){
+                throw new BusinessException(ErrorCode.PARAMS_ERROR, "身份证号格式不正确,必须为18位");
+            }
+            System.out.println(phone);
+            // 手机号
+            if(phone.length() != 11){
+                throw new BusinessException(ErrorCode.PARAMS_ERROR, "手机号格式不正确,必须为11位");
+            }
+
+            //
+            String userAccount = String.valueOf((maxAccount + i + 1));
+            String userPassword = cardId.substring(cardId.length() - 8);
+
+            User u = new User();
+            u.setUserAccount(userAccount);
+            u.setUserName(userName);
+            u.setUserPassword(userPassword);
+            u.setCardId(cardId);
+            u.setPhone(phone);
+            u.setUserRole("student");
+            u.setDepartment("");
+            u.setClasses("");
+
+            try{
+                this.baseMapper.insert(u);
+                archiveService.createArchive(u);
+            }catch(Exception e){
+                throw new BusinessException(ErrorCode.OPERATION_ERROR,"导入失败,可能是学号重复或者系统错误,请重新检查");
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 内部更新密码
+     * @return
+     */
+    @Override
+    public User updatePassIn(UserUpdatePassRequest userUpdatePassRequest){
+        String userAccount = userUpdatePassRequest.getUserAccount();
+        String userPassword = userUpdatePassRequest.getUserPassword();
+        String newPassword = userUpdatePassRequest.getNewPassword();
+        String checkRePassword = userUpdatePassRequest.getCheckRePassword();
+
+        if(userPassword.length() < 8 || userPassword.length() > 20){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"密码长度必须为8-20位");
+        }
+        if(newPassword.length() < 8 || newPassword.length() > 20){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"新密码长度必须为8-20位");
+        }
+        if(!newPassword.equals(checkRePassword)){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"新密码与确认密码不一致");
+        }
+        if(newPassword.equals(userPassword)){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"新密码与原密码一致");
+        }
+
+        // 查找
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("userAccount",userAccount)
+                .eq("userPassword",userPassword);
+        User user = this.baseMapper.selectOne(queryWrapper);
+        if(user == null){
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR,"原密码不正确");
+        }
+
+        UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.set("userPassword",newPassword).eq("userAccount",userAccount);
+        int result = this.baseMapper.update(null,updateWrapper);
+        if(result == 0){
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR,"操作失败");
+        }
+        return user;
+    }
+
+    /**
+     * 得到用户
+     *
+     * @param user
+     * @return
+     */
+    @Override
+    public List<UserArchiveVO> queryUserArchive(User user) {
+
+        return this.baseMapper.queryUserArchive(user);
     }
 }
 

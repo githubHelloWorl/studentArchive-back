@@ -59,6 +59,6 @@ public interface UserConstant {
     /**
      * 允许进入的路径
      */
-    List<String> allowURL = Arrays.asList("login","register","getDC","getDuty","updatePass","getArchive","queryUserByRole");
+    List<String> allowURL = Arrays.asList("login","register","getDC","getDuty","updatePass","getArchive","queryUserByRole","getCurrentUser");
     // endregion
 }

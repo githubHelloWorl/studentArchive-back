@@ -40,7 +40,7 @@ values (8, '20212314004', '程纺', '12345678', '371432014605189278', 'student',
 insert into user(id, userAccount, userName, userPassword, cardId, userRole, phone, department, classes)
 values (9, '20212314005', '万欧生','12345678','371432200451149004', 'student', '18598740256', '商学院', '会计学');
 insert into user(id, userAccount, userName, userPassword, cardId, userRole, phone, department, classes)
-values (10, '20212314006', '李伟', '12345678', '371432060895527854', 'student', '1982205278', '信息与工程学院', '通信工程');
+values (10, '20212314006', '李伟', '12345678', '371432060895527854', 'student', '19822052788', '信息与工程学院', '通信工程');
 
 
 drop table if exists archive;

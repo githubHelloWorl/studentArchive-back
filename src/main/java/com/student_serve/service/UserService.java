@@ -1,8 +1,11 @@
 package com.student_serve.service;
 
+import com.student_serve.model.dto.user.UserArchiveRequest;
 import com.student_serve.model.dto.user.UserRegisterRequest;
+import com.student_serve.model.dto.user.UserUpdatePassRequest;
 import com.student_serve.model.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.student_serve.model.vo.UserArchiveVO;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -67,5 +70,24 @@ public interface UserService extends IService<User> {
      */
     List<User> queryUser(User user);
 
+    /**
+     * 删除用户
+     * @param user
+     * @return
+     */
     User deleteUser(User user);
+
+    /**
+     * 导入用户
+     * @param userList
+     * @return
+     */
+    Boolean importData(List<User> userList);
+
+    User updatePassIn(UserUpdatePassRequest userUpdatePassRequest);
+
+    /**
+     * 新管理员得到学生列表
+     */
+    List<UserArchiveVO> queryUserArchive(User user);
 }

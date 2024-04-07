@@ -27,4 +27,27 @@
         job,duty,unity,
         updateTime
     </sql>
+
+    <select id="queryUserArchive" parameterType="com.student_serve.model.entity.User"
+            resultType="com.student_serve.model.vo.UserArchiveVO">
+        select u.*, a.archiveId,a.sex,a.health,a.address,a.origin,a.nation,a.createTime from user u left join archive a
+        on u.userAccount = a.sid
+        <where>
+            <if test="user.userAccount != null and user.userAccount != ''">
+                u.userAccount like concat('%', #{user.userAccount},'%')
+            </if>
+            <if test="user.cardId != null and user.cardId != ''">
+                and u.cardId like concat('%', #{user.cardId}, '%')
+            </if>
+            <if test="user.phone != null and user.phone != ''">
+                and u.phone like concat('%',#{user.phone},'%')
+            </if>
+            <if test="user.classes != null and user.classes != ''">
+                and u.classes like concat('%', #{user.classes}, '%')
+            </if>
+            <if test="user.userRole != null and user.userRole != ''">
+                and u.userRole = #{user.userRole}
+            </if>
+        </where>
+    </select>
 </mapper>

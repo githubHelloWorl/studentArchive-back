@@ -134,7 +134,7 @@ public class ArchiveServiceImpl extends ServiceImpl<ArchiveMapper, Archive>
         queryWrapper.eq("sid",userAccount);
         int result = this.baseMapper.delete(queryWrapper);
         if(result == 0){
-            throw new BusinessException(ErrorCode.OPERATION_ERROR);
+            throw new BusinessException(ErrorCode.OPERATION_ERROR,"删除档案出错");
         }
         return null;
     }

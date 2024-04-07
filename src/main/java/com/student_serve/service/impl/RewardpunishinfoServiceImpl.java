@@ -183,10 +183,27 @@ public class RewardpunishinfoServiceImpl extends ServiceImpl<RewardpunishinfoMap
         QueryWrapper<Rewardpunishinfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("sid",userAccount);
         int result = this.baseMapper.delete(queryWrapper);
-        if(result == 0){
-            throw new BusinessException(ErrorCode.OPERATION_ERROR);
-        }
+        // TODO 3 删除信息是否报错
+//        if(result == 0){
+//            throw new BusinessException(ErrorCode.OPERATION_ERROR);
+//        }
         return null;
+    }
+
+    /**
+     * 得到PR
+     * @param userAccount
+     * @return
+     */
+    @Override
+    public List<Rewardpunishinfo> getPRByuserAccount(String userAccount){
+
+        //
+        QueryWrapper<Rewardpunishinfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("sid",userAccount);
+        List<Rewardpunishinfo> list = this.baseMapper.selectList(queryWrapper);
+
+        return list;
     }
 }
 

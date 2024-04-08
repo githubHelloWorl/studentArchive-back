@@ -1,6 +1,7 @@
 package com.student_serve.service;
 
 import com.student_serve.model.dto.user.UserArchiveRequest;
+import com.student_serve.model.dto.user.UserArchiveUpdateRequest;
 import com.student_serve.model.dto.user.UserRegisterRequest;
 import com.student_serve.model.dto.user.UserUpdatePassRequest;
 import com.student_serve.model.entity.User;
@@ -90,4 +91,9 @@ public interface UserService extends IService<User> {
      * 新管理员得到学生列表
      */
     List<UserArchiveVO> queryUserArchive(User user);
+
+    /**
+     * 更新信息档案
+     */
+    boolean updateUserArchive(UserArchiveUpdateRequest userArchiveUpdateRequest);
 }

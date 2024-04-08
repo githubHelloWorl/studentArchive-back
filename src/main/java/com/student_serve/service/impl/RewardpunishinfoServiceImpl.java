@@ -80,6 +80,7 @@ public class RewardpunishinfoServiceImpl extends ServiceImpl<RewardpunishinfoMap
                 .set("fileTime", rewardpunishinfo.getFileTime())
                 .set("fileUnit", rewardpunishinfo.getFileUnit())
                 .set("stime", rewardpunishinfo.getStime())
+                .set("filePath", rewardpunishinfo.getFilePath())
                 .eq("fileId", rewardpunishinfo.getFileId());
 
         //

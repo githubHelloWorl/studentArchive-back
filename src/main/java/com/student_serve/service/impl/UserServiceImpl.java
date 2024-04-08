@@ -9,6 +9,7 @@ import static com.student_serve.constant.UserConstant.*;
 import com.student_serve.common.ErrorCode;
 import com.student_serve.exception.BusinessException;
 import com.student_serve.model.dto.user.UserArchiveRequest;
+import com.student_serve.model.dto.user.UserArchiveUpdateRequest;
 import com.student_serve.model.dto.user.UserRegisterRequest;
 import com.student_serve.model.dto.user.UserUpdatePassRequest;
 import com.student_serve.model.entity.Archive;
@@ -509,6 +510,85 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     public List<UserArchiveVO> queryUserArchive(User user) {
 
         return this.baseMapper.queryUserArchive(user);
+    }
+
+    /**
+     * 更新学生信息档案
+     * @param userArchiveRequest
+     * @return
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean updateUserArchive(UserArchiveUpdateRequest userArchiveUpdateRequest){
+        String userAccount = userArchiveUpdateRequest.getUserAccount();
+        String userName = userArchiveUpdateRequest.getUserName();
+        String cardId = userArchiveUpdateRequest.getCardId();
+        String phone = userArchiveUpdateRequest.getPhone();
+        String department = userArchiveUpdateRequest.getDepartment();
+        String classes = userArchiveUpdateRequest.getClasses();
+        String archiveId = userArchiveUpdateRequest.getArchiveId();
+        String sex = userArchiveUpdateRequest.getSex();
+        String address = userArchiveUpdateRequest.getAddress();
+        String health = userArchiveUpdateRequest.getHealth();
+        String origin = userArchiveUpdateRequest.getOrigin();
+        String nation = userArchiveUpdateRequest.getNation();
+        Date createTime = userArchiveUpdateRequest.getCreateTime();
+
+
+        if (userAccount.length() != 11) {
+                throw new BusinessException(ErrorCode.PARAMS_ERROR, "账号格式错误,学生学号需要11位");
+        }
+        // 姓名
+        if (userName.length() < 2 || userName.length() > 6) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "姓名长度必须在2-6位中");
+        }
+        // 身份证号
+        if(cardId.length() != 18){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "身份证号格式不正确,必须为18位");
+        }
+        // 手机号
+        if(phone.length() != 11){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "手机号格式不正确,必须为11位");
+        }
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+
+        // 查找是否存在身份证号
+//        queryWrapper.eq("cardId",cardId);
+//        User user1 = this.baseMapper.selectOne(queryWrapper);
+//        if (user1 != null) {
+//            throw new BusinessException(ErrorCode.EXIST_DATA_ERROR, "该身份证号已经存在");
+//        }
+
+        // 查找是否存在手机号
+//        queryWrapper.clear();
+//        queryWrapper.eq("phone",phone);
+//        user1 = this.baseMapper.selectOne(queryWrapper);
+//        if (user1 != null) {
+//            throw new BusinessException(ErrorCode.EXIST_DATA_ERROR, "该手机号已经存在");
+//        }
+
+        // 更新学生信息
+        UpdateWrapper<User> updateWrapper1 = new UpdateWrapper<>();
+        updateWrapper1.set("userName",userName)
+                .set("department",department)
+                .set("classes",classes)
+                .set("cardId",cardId)
+                .set("phone",phone)
+                .eq("userAccount",userAccount);
+        this.baseMapper.update(null,updateWrapper1);
+
+        // 更新档案
+        Archive archive = new Archive();
+        UpdateWrapper<Archive> updateWrapper2 = new UpdateWrapper<>();
+        updateWrapper2.set("sex",sex)
+                .set("address",address)
+                .set("health",health)
+                .set("origin",origin)
+                .set("nation",nation)
+                .set("createTime",createTime)
+                .eq("archiveId",archiveId);
+        archiveService.update(null,updateWrapper2);
+        return true;
     }
 }
 

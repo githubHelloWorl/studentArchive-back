@@ -9,8 +9,10 @@ import com.student_serve.common.ResultUtils;
 import com.student_serve.exception.BusinessException;
 import com.student_serve.model.dto.page.PageRequest;
 import com.student_serve.model.dto.user.UserArchiveRequest;
+import com.student_serve.model.dto.user.UserArchiveUpdateRequest;
 import com.student_serve.model.dto.user.UserRegisterRequest;
 import com.student_serve.model.dto.user.UserUpdatePassRequest;
+import com.student_serve.model.entity.Archive;
 import com.student_serve.model.entity.User;
 import com.student_serve.model.vo.UserArchiveVO;
 import com.student_serve.service.UserService;
@@ -23,6 +25,7 @@ import static com.student_serve.constant.UserConstant.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -287,6 +290,55 @@ public class UserController {
         log.info("{} 进行导入学生列表", userList);
 
         return ResultUtils.success(userService.importData(userList));
+    }
+
+    /**
+     *
+     * @param archive
+     * @return
+     */
+    @PostMapping("/updateUserArchive")
+    public BaseResponse<Boolean> updateArchiveByTeacher(@RequestBody UserArchiveUpdateRequest userArchiveUpdateRequest){
+        log.info("{} 教师更新学生档案",userArchiveUpdateRequest);
+
+        // 判断
+        String userAccount = userArchiveUpdateRequest.getUserAccount();
+        String userName = userArchiveUpdateRequest.getUserName();
+        String cardId = userArchiveUpdateRequest.getCardId();
+        String phone = userArchiveUpdateRequest.getPhone();
+        String department = userArchiveUpdateRequest.getDepartment();
+        String classes = userArchiveUpdateRequest.getClasses();
+        String archiveId = userArchiveUpdateRequest.getArchiveId();
+        String sex = userArchiveUpdateRequest.getSex();
+        String address = userArchiveUpdateRequest.getAddress();
+        String health = userArchiveUpdateRequest.getHealth();
+        String origin = userArchiveUpdateRequest.getOrigin();
+        String nation = userArchiveUpdateRequest.getNation();
+        Date createTime = userArchiveUpdateRequest.getCreateTime();
+
+        if(StringUtils.isAnyBlank(userAccount,userName,cardId,phone,department,classes)){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        if(StringUtils.isAnyBlank(archiveId,sex,address,health,origin,nation)){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        if(ObjectUtils.isEmpty(createTime)){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+
+        return ResultUtils.success(userService.updateUserArchive(userArchiveUpdateRequest));
+    }
+
+    @PostMapping("/allDelete")
+    public BaseResponse<Boolean> allDelete(@RequestBody List<User> list, HttpServletRequest request) {
+        log.info("{} 列表名单",list);
+
+        // 删除
+        list.forEach(user -> {
+            userService.deleteUser(user);
+        });
+
+        return ResultUtils.success(true);
     }
 
     @GetMapping("/getDC")

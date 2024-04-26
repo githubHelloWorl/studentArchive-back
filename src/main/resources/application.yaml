@@ -15,6 +15,11 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   mvc:
     static-path-pattern: /static/**
+  # 文件传输配置
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
 
 mybatis-plus:
   global-config:
@@ -57,4 +62,6 @@ pagehelper:
   support-methods-arguments: true
   params: count=countSql
 
-
+# 引用
+ip: localhost
+imgUrl: D:\java\myHomeWork1\3-31 studentArchiveManager\studentArchive4\studentArchive\front\src\assets\image\

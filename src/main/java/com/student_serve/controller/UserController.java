@@ -316,15 +316,16 @@ public class UserController {
         String nation = userArchiveUpdateRequest.getNation();
         Date createTime = userArchiveUpdateRequest.getCreateTime();
 
-        if(StringUtils.isAnyBlank(userAccount,userName,cardId,phone,department,classes)){
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
-        }
-        if(StringUtils.isAnyBlank(archiveId,sex,address,health,origin,nation)){
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
-        }
-        if(ObjectUtils.isEmpty(createTime)){
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
-        }
+        //
+//        if(StringUtils.isAnyBlank(userAccount,userName,cardId,phone,department,classes)){
+//            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+//        }
+//        if(StringUtils.isAnyBlank(archiveId,sex,address,health,origin,nation)){
+//            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+//        }
+//        if(ObjectUtils.isEmpty(createTime)){
+//            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+//        }
 
         return ResultUtils.success(userService.updateUserArchive(userArchiveUpdateRequest));
     }

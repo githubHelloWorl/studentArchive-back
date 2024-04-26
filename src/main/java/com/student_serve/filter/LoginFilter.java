@@ -35,7 +35,7 @@ public class LoginFilter implements Filter {
         //1、获取本次请求的URI
         String requestURI = request.getRequestURI();// /backend/index.html
 
-        log.info("拦截到请求：{}", requestURI);
+        log.info("拦截到请求 :{}", requestURI);
 
         if (request.getSession().getAttribute(USER_LOGIN_STATE) != null) {
             // 已登录
@@ -54,6 +54,7 @@ public class LoginFilter implements Filter {
             // 允许通过
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
+            log.info("拦截到请求 :{}", requestURI);
             throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR,"未登录,请重新登录");
         }
 //

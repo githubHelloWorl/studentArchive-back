@@ -58,4 +58,12 @@ public interface RewardpunishinfoService extends IService<Rewardpunishinfo> {
      * @return
      */
     List<Rewardpunishinfo> getPRByuserAccount(String userAccount);
+
+    /**
+     * 得到通过的PR
+     * @param userAccount
+     * @return
+     */
+    List<Rewardpunishinfo> getPRByAccountState(String userAccount);
+
 }

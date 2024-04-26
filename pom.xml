@@ -77,6 +77,19 @@
             <version>1.4.1</version>
         </dependency>
 
+        <!-- JSONObject 字符与对象的转换 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>2.0.12</version>
+        </dependency>
+
+        <!-- 一些工具类 -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.8.18</version>
+        </dependency>
     </dependencies>
 
     <build>

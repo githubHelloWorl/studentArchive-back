@@ -39,11 +39,17 @@
             <if test="user.cardId != null and user.cardId != ''">
                 and u.cardId like concat('%', #{user.cardId}, '%')
             </if>
+            <if test="user.userName != null and user.userName != ''">
+                and u.userName like concat('%', #{user.userName}, '%')
+            </if>
             <if test="user.phone != null and user.phone != ''">
                 and u.phone like concat('%',#{user.phone},'%')
             </if>
             <if test="user.classes != null and user.classes != ''">
                 and u.classes like concat('%', #{user.classes}, '%')
+            </if>
+            <if test="user.department != null and user.department != ''">
+                and u.department like concat('%', #{user.department}, '%')
             </if>
             <if test="user.userRole != null and user.userRole != ''">
                 and u.userRole = #{user.userRole}

@@ -206,6 +206,22 @@ public class RewardpunishinfoServiceImpl extends ServiceImpl<RewardpunishinfoMap
 
         return list;
     }
+
+    /**
+     * 得到通过的PR  state 0-未審核/1-未通過/2-通過
+     * @param userAccount
+     * @return
+     */
+    @Override
+    public List<Rewardpunishinfo> getPRByAccountState(String userAccount){
+
+        //
+        QueryWrapper<Rewardpunishinfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("sid",userAccount).eq("state","2");
+        List<Rewardpunishinfo> list = this.baseMapper.selectList(queryWrapper);
+
+        return list;
+    }
 }
 
 

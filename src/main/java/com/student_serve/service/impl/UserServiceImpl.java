@@ -406,9 +406,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     @Override
     public Boolean importData(List<User> userList){
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("userRole","student");
         queryWrapper.select("MAX(userAccount) as maxAccount");
         Map<String, Object> result = this.baseMapper.selectMaps(queryWrapper).get(0);
         String maxAccountStr = (String) result.get("maxAccount");
+
 
         Long maxAccount = Long.valueOf(maxAccountStr);
 
@@ -430,7 +432,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             }
             System.out.println(phone);
             // 手机号
-            if(phone.length() != 11){
+            if(!StringUtils.isEmpty(phone) && phone.length() != 11){
                 throw new BusinessException(ErrorCode.PARAMS_ERROR, "手机号格式不正确,必须为11位");
             }
 
@@ -452,7 +454,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
                 this.baseMapper.insert(u);
                 archiveService.createArchive(u);
             }catch(Exception e){
-                throw new BusinessException(ErrorCode.OPERATION_ERROR,"导入失败,可能是学号重复或者系统错误,请重新检查");
+                throw new BusinessException(ErrorCode.OPERATION_ERROR,"导入失败,可能是身份证号重复或者系统错误,请重新检查");
             }
         }
         return true;
